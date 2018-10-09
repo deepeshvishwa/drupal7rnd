@@ -1,0 +1,6 @@
+name = Loggedin Users List
+description = Showing the list of loggedin users who have currently loggedin.
+core = 7.x
+configure=admin/config/people/loggedin-users-list
+; Information added by Drupal.org packaging script on 2018-10-10
+datestamp = "1539180854"
