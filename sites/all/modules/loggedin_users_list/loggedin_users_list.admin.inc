@@ -18,7 +18,7 @@ function loggedin_users_list_page() {
   $header = array(
     t('User id'),
     t('Username'),
-    t('Number of Loggedin (Devices or Browsers)'),
+    t('Number of Logged-in (Devices or Browsers)'),
     t('HostName'),
     t('Loggedin Time'),
     t('Operations'),
@@ -84,6 +84,6 @@ function logout_user_custom_page($sid) {
     ->condition('sid', $sid)
     ->execute();
 
-  drupal_set_message(t('User loggedout successfully.'));
+  drupal_set_message(t('User log out successfully.'));
   drupal_goto('/admin/config/people/loggedin_users_list');
 }

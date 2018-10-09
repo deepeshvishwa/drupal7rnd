@@ -11,7 +11,7 @@
 function loggedin_users_list_menu() {
   $items = array();
   $items['admin/config/people/loggedin_users_list'] = array(
-    'title' => 'Loggedin users list',
+    'title' => 'Logged-in users list',
     'description' => 'List of loggedin user at this time.',
     'access arguments' => array('administer'),
     'page callback' => 'loggedin_users_list_page',
@@ -19,7 +19,7 @@ function loggedin_users_list_menu() {
   );
 
   $items['admin/config/people/loggedin_users_list/logout/%'] = array(
-    'title' => 'Logout User',
+    'title' => 'Log out User',
     'description' => 'Logout user from his machine.',
     'access arguments' => array('administer'),
     'page arguments' => array(5),
