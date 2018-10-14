@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Administrator is able to see all loggedin users on the website.
+ * Administrator is able to see all logged-in users on the website.
  */
 
 /**
@@ -10,15 +10,15 @@
  */
 function loggedin_users_list_menu() {
   $items = array();
-  $items['admin/config/people/loggedin_users_list'] = array(
+  $items['admin/config/people/loggedin-users-list'] = array(
     'title' => 'Logged-in users list',
-    'description' => 'List of loggedin user at this time.',
+    'description' => 'List of logged-in user at this time.',
     'access arguments' => array('administer'),
     'page callback' => 'loggedin_users_list_page',
     'file' => 'loggedin_users_list.admin.inc',
   );
 
-  $items['admin/config/people/loggedin_users_list/logout/%'] = array(
+  $items['admin/config/people/loggedin-users-list/logout/%'] = array(
     'title' => 'Log out User',
     'description' => 'Logout user from his machine.',
     'access arguments' => array('administer'),

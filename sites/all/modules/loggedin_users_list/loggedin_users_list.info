@@ -1,4 +1,4 @@
-name = Loggedin Users List
+name = Logged-in Users List
 description = Showing the list of logged-in users who have currently logged-in.
 core = 7.x
 configure=admin/config/people/loggedin-users-list

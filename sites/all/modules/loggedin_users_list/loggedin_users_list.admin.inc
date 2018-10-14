@@ -2,11 +2,11 @@
 
 /**
  * @file
- * Administrative functionality for Loggedin users list.
+ * Administrative functionality for Logged-in users list.
  */
 
 /**
- * Display list of loggedin users who have logged in verious machines/browsers.
+ * Display list of logged-in users who have logged-in verious machines/browsers.
  */
 function loggedin_users_list_page() {
   // Display number of users currently who have loggedin.
@@ -41,7 +41,7 @@ function loggedin_users_list_page() {
       foreach ($detailed_list as $ls) {
         $dt1 = new DateTime($ls->loggedin_time);
         $loggedin_time_inner = $dt1->format('Y-m-d H:i:s');
-        $logout_user1 = '<a href="/admin/config/people/loggedin_users_list/logout/' . $ls->sid . '">Logout</a>';
+        $logout_user1 = '<a href="/admin/config/people/loggedin-users-list/logout/' . $ls->sid . '">Logout</a>';
         $rows_inner[] = array(
           $ls->hostname,
           $loggedin_time_inner,
@@ -59,7 +59,7 @@ function loggedin_users_list_page() {
       );
     }
     else {
-      $logout_user = '<a href="/admin/config/people/loggedin_users_list/logout/' . $user_list->sid . '">Logout</a>';
+      $logout_user = '<a href="/admin/config/people/loggedin-users-list/logout/' . $user_list->sid . '">Logout</a>';
       $rows[] = array(
         $user_list->uid,
         $user_list->name,
@@ -77,7 +77,7 @@ function loggedin_users_list_page() {
 }
 
 /**
- * Selected user loggedout from here.
+ * Selected user log out from here.
  */
 function logout_user_custom_page($sid) {
   $status = db_delete('sessions')
@@ -85,5 +85,5 @@ function logout_user_custom_page($sid) {
     ->execute();
 
   drupal_set_message(t('User log out successfully.'));
-  drupal_goto('/admin/config/people/loggedin_users_list');
+  drupal_goto('/admin/config/people/loggedin-users-list');
 }
