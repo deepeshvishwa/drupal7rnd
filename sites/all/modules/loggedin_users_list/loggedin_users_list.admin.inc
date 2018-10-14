@@ -30,6 +30,8 @@ function loggedin_users_list_page() {
 
     $dt = new DateTime($user_list->loggedin_time);
     $loggedin_time = $dt->format('Y-m-d H:i:s');
+	$user_name = '<a href="/user/' . $user_list->uid . '">'.$user_list->name.'</a>';
+
 
     $detailed_list = db_query("SELECT hostname, FROM_UNIXTIME(timestamp) loggedin_time, sid FROM {sessions} WHERE uid= :uid ORDER BY loggedin_time DESC", array(':uid' => $user_list->uid))->fetchAll();
 
@@ -53,7 +55,7 @@ function loggedin_users_list_page() {
       $value_host = array('data' => $table_data_inner, 'colspan' => 3);
       $rows[] = array(
         $user_list->uid,
-        $user_list->name,
+        $user_name,
         $user_list->count_ip,
         $value_host,
       );
@@ -62,7 +64,7 @@ function loggedin_users_list_page() {
       $logout_user = '<a href="/admin/config/people/loggedin-users-list/logout/' . $user_list->sid . '">Logout</a>';
       $rows[] = array(
         $user_list->uid,
-        $user_list->name,
+        $user_name,
         $user_list->count_ip,
         $user_list->hostname,
         $loggedin_time,
