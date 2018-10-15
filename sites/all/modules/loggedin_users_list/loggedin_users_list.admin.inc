@@ -30,8 +30,7 @@ function loggedin_users_list_page() {
 
     $dt = new DateTime($user_list->loggedin_time);
     $loggedin_time = $dt->format('Y-m-d H:i:s');
-	$user_name = '<a href="/user/' . $user_list->uid . '">'.$user_list->name.'</a>';
-
+    $user_name = '<a href="/user/' . $user_list->uid . '">' . $user_list->name . '</a>';
 
     $detailed_list = db_query("SELECT hostname, FROM_UNIXTIME(timestamp) loggedin_time, sid FROM {sessions} WHERE uid= :uid ORDER BY loggedin_time DESC", array(':uid' => $user_list->uid))->fetchAll();
 
