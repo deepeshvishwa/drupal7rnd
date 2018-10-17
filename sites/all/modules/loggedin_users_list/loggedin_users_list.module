@@ -13,7 +13,7 @@ function loggedin_users_list_menu() {
   $items['admin/config/people/loggedin-users-list'] = array(
     'title' => 'Logged-in users list',
     'description' => 'List of logged-in user at this time.',
-    'access arguments' => array('administer'),
+    'access arguments' => array('administer logged in users module'),
     'page callback' => 'loggedin_users_list_page',
     'file' => 'loggedin_users_list.admin.inc',
   );
@@ -21,7 +21,7 @@ function loggedin_users_list_menu() {
   $items['admin/config/people/loggedin-users-list/logout/%'] = array(
     'title' => 'Log out User',
     'description' => 'Logout user from his machine.',
-    'access arguments' => array('administer'),
+    'access arguments' => array('administer logged in users module'),
     'page arguments' => array(5),
     'page callback' => 'logout_user_custom_page',
     'file' => 'loggedin_users_list.admin.inc',
@@ -29,6 +29,19 @@ function loggedin_users_list_menu() {
 
   return $items;
 }
+
+
+/**
+ * Implements hook_permission().
+ */
+function loggedin_users_list_permission() {
+  return array(
+    'administer logged in users module' => array(
+      'title' => t('Administer logged in users modules'),
+    ),
+  );
+}
+
 
 /**
  * Custom theme function to show results.

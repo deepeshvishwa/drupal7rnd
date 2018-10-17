@@ -10,10 +10,19 @@
  */
 function loggedin_users_list_page() {
   // Display number of users currently who have loggedin.
-  $users_no = db_query("SELECT COUNT(DISTINCT(uid)) FROM {sessions}")->fetchfield();
+  $users_no = db_select('sessions')
+  ->fields('sessions', array('uid'))
+  ->distinct()
+  ->countQuery()->execute()->fetchField();
 
-  // Display List of currently loggedin users.
-  $users_list = db_query("SELECT count(s.uid) count_ip, s.uid, u.name, s.hostname, FROM_UNIXTIME(s.timestamp) loggedin_time, sid FROM {sessions} s LEFT JOIN {users} u ON u.uid = s.uid GROUP BY s.uid ORDER BY s.uid")->fetchAll();
+  $query = db_select('sessions', 's');
+  $query->join('users', 'u', 's.uid = u.uid');
+  $query->addExpression('COUNT(s.uid)', 'count_ip');
+  $query->fields('s',array('uid', 'hostname', 'timestamp', 'sid'));
+  $query->fields('u',array('name'));
+  $query->groupBy('s.uid');
+  $query->orderBy('uid', 'ASC');
+  $users_list = $query->execute();
 
   $header = array(
     t('User id'),
@@ -27,30 +36,31 @@ function loggedin_users_list_page() {
   $rows = array();
 
   foreach ($users_list as $user_list) {
-
-    $dt = new DateTime($user_list->loggedin_time);
-    $loggedin_time = $dt->format('Y-m-d H:i:s');
-    $user_name = '<a href="/user/' . $user_list->uid . '">' . $user_list->name . '</a>';
-
-    $detailed_list = db_query("SELECT hostname, FROM_UNIXTIME(timestamp) loggedin_time, sid FROM {sessions} WHERE uid= :uid ORDER BY loggedin_time DESC", array(':uid' => $user_list->uid))->fetchAll();
+    $user_name = l(t($user_list->name), "/user/$user_list->uid");
 
     if ($user_list->count_ip > 1) {
 
-      $header_inner = array('', '');
+      $header_inner = array('','');
       $rows_inner = array();
 
+      $query = db_select('sessions', 's');
+      $query->fields('s',array('hostname', 'timestamp', 'sid'));
+      $query->condition('uid', $user_list->uid, '=');
+      $query->orderBy('timestamp', 'DESC');
+      $detailed_list = $query->execute();
+
       foreach ($detailed_list as $ls) {
-        $dt1 = new DateTime($ls->loggedin_time);
-        $loggedin_time_inner = $dt1->format('Y-m-d H:i:s');
-        $logout_user1 = '<a href="/admin/config/people/loggedin-users-list/logout/' . $ls->sid . '">Logout</a>';
+        $loggedin_time_inner = format_date($ls->timestamp, 'custom', 'Y-m-d H:i:s');
+        $logout_user_inner = l(t('Logout'), "/admin/config/people/loggedin-users-list/logout/$ls->sid");
+
         $rows_inner[] = array(
           $ls->hostname,
           $loggedin_time_inner,
-          $logout_user1,
+          $logout_user_inner,
         );
       }
-      $table_data_inner = theme('table', array('rows' => $rows_inner));
 
+      $table_data_inner = theme('table', array('rows' => $rows_inner));
       $value_host = array('data' => $table_data_inner, 'colspan' => 3);
       $rows[] = array(
         $user_list->uid,
@@ -60,7 +70,8 @@ function loggedin_users_list_page() {
       );
     }
     else {
-      $logout_user = '<a href="/admin/config/people/loggedin-users-list/logout/' . $user_list->sid . '">Logout</a>';
+      $logout_user = l(t('Logout'), "/admin/config/people/loggedin-users-list/logout/$user_list->sid");;
+      $loggedin_time = format_date($user_list->timestamp, 'custom', 'Y-m-d H:i:s');
       $rows[] = array(
         $user_list->uid,
         $user_name,
